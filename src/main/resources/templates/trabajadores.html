@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Mantenimiento - Trabajadores</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css">
+</head>
+
+<body>
+    <!-- Incluir el header desde el fragmento header.html -->
+    <div th:include="~{fragments/header.html :: header}"></div>
+
+    <div class="container">
+        <h1 class="title is-3">Listado de Trabajadores</h1>
+
+        <!-- Botón para abrir el modal -->
+        <button class="button is-primary" onclick="openModal()">Agregar Trabajador</button>
+
+        <!-- Tabla de trabajadores -->
+        <table class="table is-striped is-fullwidth">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="trabajador : ${trabajadores}">
+                    <td th:text="${trabajador.id}"></td>
+                    <td th:text="${trabajador.nombre}"></td>
+                    <td th:text="${trabajador.email}"></td>
+                    <td th:text="${trabajador.telefono}"></td>
+                    <td>
+                        <a class="button is-small is-info"
+                        th:href="@{/mantenimiento/trabajadores/edit/{id}(id=${trabajador.id})}">Editar</a>
+
+                        <form th:action="@{/mantenimiento/trabajadores/delete/{id}(id=${trabajador.id})}" method="post" style="display:inline;">
+                            <button class="button is-small is-danger" type="submit" onclick="return confirm('¿Estás seguro de que deseas eliminar este trabajador?')">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal de agregar trabajador -->
+    <div id="addTrabajadorModal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="box">
+                <h1 class="title is-3">Agregar Nuevo Trabajador</h1>
+
+                <!-- Formulario para agregar trabajador -->
+                <form th:action="@{/mantenimiento/trabajadores}" method="post">
+
+                    <div class="field">
+                        <label class="label" for="nombre">Nombre</label>
+                        <div class="control">
+                            <input class="input" type="text" id="nombre" name="nombre" 
+                                placeholder="Nombre del trabajador" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="email">Email</label>
+                        <div class="control">
+                            <input class="input" type="email" id="email" name="email" 
+                                placeholder="Email del trabajador" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="telefono">Teléfono</label>
+                        <div class="control">
+                            <input class="input" type="text" id="telefono" name="telefono"
+                                placeholder="Teléfono del trabajador" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-primary" type="submit">Guardar</button>
+                            <button class="button is-light" type="button" onclick="closeModal()">Cancelar</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close" onclick="closeModal()"></button>
+    </div>
+
+    <script>
+        // Funciones para abrir y cerrar el modal
+        function openModal() {
+            document.getElementById('addTrabajadorModal').classList.add('is-active');
+        }
+
+        function closeModal() {
+            document.getElementById('addTrabajadorModal').classList.remove('is-active');
+        }
+    </script>
+</body>
+
+</html>

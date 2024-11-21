@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Mantenimiento - Editar Trabajadores</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css">
+</head>
+
+<body>
+    <!-- Incluir el header desde el fragmento header.html -->
+    <div th:include="~{fragments/header.html :: header}"></div>
+    
+    <div class="container">
+
+        <h1 class="title is-3">Editar Trabajador</h1>
+        <form th:action="@{/mantenimiento/trabajadores}" method="post">
+            <input type="hidden" name="id" th:value="${trabajador.id}"> <!-- Campo oculto para el ID del trabajador -->
+            <div class="field">
+                <label class="label">Nombre</label>
+                <div class="control">
+                    <input class="input" type="text" name="nombre" th:value="${trabajador.nombre}" required>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                    <input class="input" type="email" name="email" th:value="${trabajador.email}" required>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Teléfono</label>
+                <div class="control">
+                    <input class="input" type="text" name="telefono" th:value="${trabajador.telefono}" required>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <button class="button is-primary" type="submit">Guardar</button>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <a class="button is-light" th:href="@{/mantenimiento/trabajadores}">Regresar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

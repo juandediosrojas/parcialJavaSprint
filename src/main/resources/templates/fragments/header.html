@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css">
+</head>
+
+<body>
+    <div th:fragment="header">
+        <header class="header">
+            <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+                <div class="navbar-menu">
+                    <div class="navbar-start">
+                        <a class="navbar-item" th:href="@{/inicio}">Inicio</a>
+
+                        <!-- Submenú de Mantenimiento -->
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">Mantenimiento</a>
+                            <div class="navbar-dropdown">
+                                <a class="navbar-item" th:href="@{/mantenimiento/trabajadores}">Trabajadores</a>
+                                <a class="navbar-item" th:href="@{/mantenimiento/servicios}">Servicios</a>
+                                <a class="navbar-item" th:href="@{/mantenimiento/clientes}">Clientes</a>
+                                <a class="navbar-item" th:href="@{/mantenimiento/tipo}">Tipo</a>
+                            </div>
+                        </div>
+
+                        <a class="navbar-item" th:href="@{/reportes}">Reportes</a>
+                        <a class="navbar-item" th:href="@{/configuracion}">Configuración</a>
+                    </div>
+                    <div class="navbar-end">
+                        <form th:action="@{/logout}" method="post">
+                            <button class="button is-light">
+                                Salir
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Aplicación Web</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a th:href="@{/inicio}">Inicio</a></li>
+                <li><a th:href="@{/mantenimiento}">Mantenimiento</a></li>
+                <li><a th:href="@{/reportes}">Reportes</a></li>
+                <li><a th:href="@{/configuracion}">Configuración</a></li>
+                <li><a th:href="@{/logout}">Salir</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <!-- El contenido específico de cada página se incluirá aquí -->
+        <div th:replace="${body}"></div>
+    </main>
+</body>
+</html>
