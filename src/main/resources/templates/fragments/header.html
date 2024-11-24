@@ -7,8 +7,8 @@
 
 <body>
     <div th:fragment="header">
-        <header class="header">
-            <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+        <header class="header" style="margin-bottom: 50px;"></header>
+            <nav class="navbar is-primary is-fixed-top" role="navigation" aria-label="main navigation">
                 <div class="navbar-menu">
                     <div class="navbar-start">
                         <a class="navbar-item" th:href="@{/inicio}">Inicio</a>
@@ -20,7 +20,6 @@
                                 <a class="navbar-item" th:href="@{/mantenimiento/trabajadores}">Trabajadores</a>
                                 <a class="navbar-item" th:href="@{/mantenimiento/servicios}">Servicios</a>
                                 <a class="navbar-item" th:href="@{/mantenimiento/clientes}">Clientes</a>
-                                <a class="navbar-item" th:href="@{/mantenimiento/tipo}">Tipo</a>
                             </div>
                         </div>
 

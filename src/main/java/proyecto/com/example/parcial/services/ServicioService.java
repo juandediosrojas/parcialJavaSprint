@@ -3,6 +3,8 @@ package proyecto.com.example.parcial.services;
 import org.springframework.stereotype.Service;
 import proyecto.com.example.parcial.repositories.ServicioRepository;
 import proyecto.com.example.parcial.models.Servicio;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +18,7 @@ public class ServicioService {
     }
 
     public List<Servicio> findAll() {
-        return servicioRepository.findAll();
+        return servicioRepository.findAll() != null ? servicioRepository.findAll() : Collections.emptyList();
     }
 
     public Servicio save(Servicio servicio) {

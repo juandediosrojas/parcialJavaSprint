@@ -12,6 +12,8 @@ import proyecto.com.example.parcial.models.Servicio;
 import proyecto.com.example.parcial.models.Trabajador;
 import proyecto.com.example.parcial.services.TrabajadorService;
 import proyecto.com.example.parcial.services.ServicioService;
+import proyecto.com.example.parcial.services.ClienteService;
+import proyecto.com.example.parcial.models.Cliente;
 
 @Controller
 @RequestMapping("/mantenimiento")
@@ -19,10 +21,12 @@ public class MantenimientoController {
 
     private final TrabajadorService trabajadorService;
     private final ServicioService servicioService;
+    private final ClienteService clienteService;
 
-    public MantenimientoController(TrabajadorService trabajadorService, ServicioService servicioService) {
+    public MantenimientoController(TrabajadorService trabajadorService, ServicioService servicioService, ClienteService clienteService) {
         this.trabajadorService = trabajadorService;
         this.servicioService = servicioService;
+        this.clienteService = clienteService;
     }
 
     // Listar trabajadores
@@ -147,12 +151,75 @@ public class MantenimientoController {
 
 
 
-    // @GetMapping("/clientes")
-    // public String listarClientes(Model model) {
-    // // Lógica para obtener lista de clientes
-    // model.addAttribute("clientes", clienteService.findAll());
-    // return "mantenimiento/clientes";
-    // }
+  
+    // Listar  clientes
+    @GetMapping("/clientes")
+    public String listarClientes(Model model) {
+    // Lógica para obtener lista de clientes
+    model.addAttribute("clientes", clienteService.findAll());
+    return "clientes";
+    }
+
+    // guardar clientes
+    @PostMapping("/clientes")
+    public String guardarCliente(
+            @RequestParam(required = false) Long id,
+            @RequestParam String nombre,
+            @RequestParam String email,
+            @RequestParam String telefono,
+            Model model) {
+
+        Cliente cliente;
+
+        if (id != null && id > 0) {
+            cliente = clienteService.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
+            cliente.setNombre(nombre);
+            cliente.setCorreo(email);
+            cliente.setTelefono(telefono);
+        } else {
+            cliente = new Cliente();
+            cliente.setNombre(nombre);
+            cliente.setCorreo(email);
+            cliente.setTelefono(telefono);
+        }
+
+        clienteService.save(cliente);
+
+        return "redirect:/mantenimiento/clientes";
+    }
+
+    // editar cliente, mas que todo lo busca para luego enviar a guardar, es como un buscar por id solamente
+    @GetMapping("/clientes/edit/{id}")
+    public String editarSCliente(@PathVariable Long id, Model model) {
+        // Lógica para obtener cliente por id
+        Cliente cliente = clienteService.findById(id)
+                .orElseThrow(() -> new RuntimeException("cliente no encontrado"));
+        if (cliente != null) {
+            model.addAttribute("cliente", cliente);
+            return "editServicio";
+        }            
+        return "redirect:/mantenimiento/clientes";
+    }
+
+     // eliminar cliente
+     @PostMapping("/clientes/delete/{id}")
+     public String eliminarCliente(@PathVariable Long id) {
+    // Lógica para eliminar cliente por id
+    clienteService.deleteById(id);
+    return "redirect:/mantenimiento/clientes";
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     // @GetMapping("/tipo")
     // public String listarTipos(Model model) {

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Inicio</title>
+    <!-- <link rel="stylesheet" href="/css/style.css"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css">
+</head>
+<body>
+    <div th:include="~{fragments/header.html :: header}"></div>
+
+    <!-- Script para mostrar alerta si hay un mensaje o error -->
+    <script th:if="${mensaje != null} or ${error != null}">
+        let message = '[[${mensaje != null ? mensaje : error}]]';
+        alert(message);
+    </script>
+    
+ </div>
+    <main class="main-content">
+        <section class="section">
+            <div class="container">
+                <h1 class="title">Página de Configuración</h1>
+                
+                <!-- Cambio de contraseña -->
+                <div class="box">
+                    <h2 class="subtitle">Cambio de Contraseña</h2>
+                    <form th:action="@{/configuracion/cambiarPassword}" method="post">
+                        <div class="field">
+                            <label class="label">Contraseña Actual</label>
+                            <div class="control">
+                                <input class="input" type="password" name="currentPassword" placeholder="Ingrese la contraseña actual" required>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Nueva Contraseña</label>
+                            <div class="control">
+                                <input class="input" type="password" name="newPassword" placeholder="Ingrese la nueva contraseña" required>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Confirmar Nueva Contraseña</label>
+                            <div class="control">
+                                <input class="input" type="password" name="confirmNewPassword" placeholder="Confirme la nueva contraseña" required>
+                            </div>
+                        </div>  
+
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-primary" type="submit">Cambiar Contraseña</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Gestión de Usuarios -->
+                <div sec:authorize="hasRole('ADMIN')" class="box">
+                    <h2 class="subtitle">Gestión de Usuarios</h2>
+                    <form th:action="@{/configuracion/newUser}" method="post">
+                        <div class="field">
+                            <label class="label">Nombre de Usuario</label>
+                            <div class="control">
+                                <input class="input" type="text" name="username" placeholder="Ingrese el nombre de usuario" required>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Contraseña</label>
+                            <div class="control">
+                                <input class="input" type="password" name="password" placeholder="Ingrese la contraseña" required>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Rol</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select name="role">
+                                        <option value="USER">Usuario</option>
+                                        <option value="ADMIN">Administrador</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-primary" type="submit">Crear Usuario</button>
+                            </div>
+                        </div>
+                    </form>                    
+                </div>
+
+                <!-- Cambiar Rol de Usuario -->
+                <div sec:authorize="hasRole('ADMIN')" class="box">
+                    <h2 class="subtitle">Cambiar Rol de Usuario</h2>
+                    <form th:action="@{/configuracion/changeRole}" method="post">                                                 
+                    <div class="field">
+                        <label class="label">Nombre de Usuario</label>
+                        <div class="control">
+                            <div class="select">
+                                <select name="username" required>
+                                    <option th:each="usuario : ${usuarios}" th:value="${usuario.username}" th:text="${usuario.username}"></option>
+                                </select>
+                            </div>
+                        </div>                        
+                        </div>
+                        <div class="field">
+                            <label class="label">Nuevo Rol</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select name="newRole">
+                                        <option value="USER">Usuario</option>
+                                        <option value="ADMIN">Administrador</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-primary" type="submit">Cambiar Rol</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>

@@ -20,26 +20,30 @@ public class SecurityConfig {
         this.usuarioService = usuarioService;
     }
 
-     @Bean
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-         http
-                 .authorizeHttpRequests(requests -> requests
-                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll() // Permite acceso a archivos estáticos
-                         .requestMatchers("/mantenimiento/**").hasRole("ADMIN")
-                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                         .anyRequest().authenticated())
-                 .formLogin(login -> login
-                         .loginPage("/login")
-                         .defaultSuccessUrl("/inicio", true)
-                         .permitAll())
-                 .logout(logout -> logout
-                         .logoutUrl("/logout")
-                         .logoutSuccessUrl("/login?logout")
-                         .permitAll())
-                 .exceptionHandling(handling -> handling
-                         .authenticationEntryPoint((request, response, authException) -> {
-                             response.sendRedirect("/login");  // Redirigir al login si no está autenticado
-                         }));
+        http
+                .authorizeHttpRequests(requests -> requests
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll() // Permite acceso a archivos
+                                                                                        // estáticos
+                        .requestMatchers("/mantenimiento/**").hasRole("ADMIN")
+                        .requestMatchers("/reportes/**").hasAnyRole("USER", "ADMIN")
+                        .anyRequest().authenticated())
+                .formLogin(login -> login
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/inicio", true)
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll())
+                .exceptionHandling(handling -> handling
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.sendRedirect("/inicio"); // Redirige a inicio en caso de 403
+                        })
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendRedirect("/login"); // Redirigir al login si no está autenticado
+                        }));
         return http.build();
     }
 
@@ -56,10 +60,10 @@ public class SecurityConfig {
                 throw new UsernameNotFoundException("Usuario no encontrado");
             }
             return User.builder()
-                .username(usuario.getUsername())
-                .password(usuario.getPassword())
-                .roles(usuario.getRole())
-                .build();
+                    .username(usuario.getUsername())
+                    .password(usuario.getPassword())
+                    .roles(usuario.getRole())
+                    .build();
         };
     }
 }

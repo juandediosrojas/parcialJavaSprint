@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import proyecto.com.example.parcial.repositories.TrabajadorRepository;
 import proyecto.com.example.parcial.models.Trabajador;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +19,7 @@ public class TrabajadorService {
     }
 
     public List<Trabajador> findAll() {
-        return trabajadorRepository.findAll();
+        return trabajadorRepository.findAll() != null ? trabajadorRepository.findAll() : Collections.emptyList();
     }
 
     public Trabajador save(Trabajador trabajador) {
